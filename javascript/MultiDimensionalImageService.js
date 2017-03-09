@@ -1,6 +1,6 @@
 require([
     "dojo/_base/declare",
-    "esri/layers/ArcGISImageServiceLayer",
+    "esri/layers/RasterLayer",
     "esri/layers/ImageServiceParameters",
     "esri/layers/MosaicRule",
     "esri/request",
@@ -9,11 +9,11 @@ require([
     "esri/tasks/ImageServiceIdentifyParameters",
     "dojo/_base/lang",
     "dojo/promise/all"
-], function(declare, ArcGISImageServiceLayer,ImageServiceParameters,
+], function(declare, RasterLayer,ImageServiceParameters,
              MosaicRule,esriRequest,TimeExtent,
              ImageServiceIdentifyTask,ImageServiceIdentifyParameters,lang,all){
     
-    return declare("MultiDimensionalImageService", esri.layers.ArcGISImageServiceLayer, {
+    return declare("MultiDimensionalImageService", RasterLayer, {
     	    
 	    constructor: function(/*Object*/ args){
                         
@@ -43,7 +43,7 @@ require([
             /*****  Public FUNCTIONS  *********************************/ 
             /**
             *  Updates the dimension values, Do not use for time.  Time is handled within
-            * map properties.  ONly works for one dimension at a time currently
+            * map properties.  Only works for one dimension at a time currently
             **/
             this.updateDimension = function (dimension, value)
                 {
@@ -158,7 +158,7 @@ require([
                    endTime = timeValues[index + 10];
                 }
                 else
-                    endTime = timeValues[timeValues.length - 1];
+                   endTime = timeValues[timeValues.length - 1];
                 
                 var timeExtent = new TimeExtent();
                 timeExtent.startTime = new Date(time);

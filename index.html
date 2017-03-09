@@ -4,11 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>
 </title>
-<link rel="stylesheet" href="//js.arcgis.com/3.9/js/dojo/dojo/resources/dojo.css">
-    <link rel="stylesheet" href="//js.arcgis.com/3.9/js/dgrid/css/dgrid.css">
-    <link rel="stylesheet" href="//js.arcgis.com/3.9/js/dgrid/css/skins/claro.css">
-    <link rel="stylesheet" href="//js.arcgis.com/3.9/js/dojo/dijit/themes/claro/claro.css">
-    <link rel="stylesheet" href="//js.arcgis.com/3.9/js/esri/css/esri.css">
+<link rel="stylesheet" href="//js.arcgis.com/3.15/js/dojo/dojo/resources/dojo.css">
+    <link rel="stylesheet" href="//js.arcgis.com/3.15/js/dgrid/css/dgrid.css">
+    <link rel="stylesheet" href="//js.arcgis.com/3.15/js/dgrid/css/skins/claro.css">
+    <link rel="stylesheet" href="//js.arcgis.com/3.15/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="//js.arcgis.com/3.15/js/esri/css/esri.css">
     <link rel="stylesheet" href="css/layout.css">
 
 
@@ -18,50 +18,52 @@
   };
 </script>
 
-<script src="//js.arcgis.com/3.9/"></script>
+<script src="//js.arcgis.com/3.15/"></script>
 <script src="lib/d3/d3.v3.min.js"></script>
 
 <script type="text/javascript">
-dojo.require("dijit.dijit"); // optimize: load dijit layer
-dojo.require("dijit.layout.BorderContainer");
-dojo.require("dijit.layout.ContentPane");
-dojo.require("dijit.layout.StackContainer");
+    dojo.require("dijit.dijit"); // optimize: load dijit layer
+    dojo.require("dijit.layout.BorderContainer");
+    dojo.require("dijit.layout.ContentPane");
+    dojo.require("dijit.layout.StackContainer");
+    dojo.require("dijit.from.HorizontalSlider"):
+    dojo.require("dojox.from.RangeSlider");
+    dojo.require("dijit.from.HorizontalRule");
+    dojo.require("dijit.from.HorizontalRuleLabels");
 </script>
 
 
 <script type="text/javascript" src="javascript/layout.js"></script>
-
 <script type="text/javascript" src="javascript/MultiDimensionalImageService.js"></script>
 <script type="text/javascript" src="javascript/timeEventSlider.js"></script>
 <script type="text/javascript" src="javascript/dimensionalSlider.js"></script>
 <script type="text/javascript" src="javascript/portalSearcher.js"></script>
 <script type="text/javascript" src="javascript/mapping.js"></script>
+<script type="text/javascript" src="javascript/ColorMaps.js"></script>
 
-
-    
 <script type="text/javascript">     
  
-function init(){
+    function init(){
 
- initMap();
+     initMap();
 
-}
-//show map on load 
-dojo.addOnLoad(init);
+    }
+    //show map on load 
+    dojo.addOnLoad(init);
 </script>
 </head>
 
 <body onResize="resetLayout()" class="claro">
-<div id="mainWindow" data-dojo-type="dijit.layout.BorderContainer"  data-dojo-props='design:"headline",gutters:false' style="width:100%; height:100%;">
+    <div id="mainWindow" data-dojo-type="dijit.layout.BorderContainer"  data-dojo-props='design:"headline",gutters:false' style="width:100%; height:100%;">
 
-<!-- Header Section-->
-<div id="header" data-dojo-type="dijit.layout.ContentPane" data-dojo-props='region:"top"'>
-  <div id="title">The Scientific Data Discovery and Explorer
-  </div>
-  <div id="subtitle">This application highlights some new capabilities in ArcGIS 10.3 supporting netCDF, HDF and GRIB Scientific Datasets.  
-  </div>
-<div id="header_flourish"></div>
-</div>
+    <!-- Header Section-->
+    <div id="header" data-dojo-type="dijit.layout.ContentPane" data-dojo-props='region:"top"'>
+      <div id="title">The Scientific Data Discovery and Explorer
+      </div>
+      <div id="subtitle">This application highlights some new capabilities in ArcGIS 10.5 supporting netCDF, HDF and GRIB Multi-Dimensional Datasets.  
+      </div>
+    <div id="header_flourish"></div>
+    </div>
 
 <!-- Map Section -->
 <div id="map" data-dojo-type="dijit.layout.ContentPane" data-dojo-props='region:"center"' style='padding:0px'>
@@ -82,7 +84,7 @@ dojo.addOnLoad(init);
 	</div>
 	
     <div id="searchPanel"  class="panel_content" data-dojo-type="dijit.layout.ContentPane" style="position:absolute;left:150px; top:0px; z-Index:997;">
-        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
+      <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
         <input name="dataFinder"  id="dataFinder" placeholder="search for scientific data" value="" size="30" />
         <input name="dataFinderSearch" type="submit" value="Search" id="dataFinderSearch" onclick="searchSciData();" />
         <input name="clearSearch" type="submit" value="Clear" id="clearSearch" onclick="clearSearch();" />
@@ -99,12 +101,19 @@ dojo.addOnLoad(init);
 		</div>
 	</div>
 	
-    <div id="footer" style="position:absolute;z-Index:995;bottom:0px;width: 100%;visibility: hidden"  data-dojo-type="dijit.layout.ContentPane">    
-		<div id="timeSliderFooter" data-dojo-type="dijit.layout.ContentPane" data-dojo-props='region:"bottom"'>
-			<div id="eventSliderPanel" class="panel_content" data-dojo-type="dijit.layout.ContentPane">
-		</div>
-	</div>
-</div>
+    <div id="footer" style="position:absolute;z-Index:995;bottom:0px;width: 100%;visibility: hidden"  data-dojo-type="dijit.layout.ContentPane">
+       <div id="footer2">
+           <div id='pixelVal'></div>
+           <div id="pixelSlider" data-dojo-type="dojox/form/HorizontalRangeSlider" data-dojo-props="showButtons:'false', intermediateChanges:'false', slideDuration:'0'">
+                <div data-dojo-type="dijit/form/HorizontalRule" data-dojo-props='container:"bottomDecoration", count:2, style:{height:"5px"}'></div>
+                <div id="pixelLabels"></div>
+           </div>
+       </div>
+       <div id="timeSliderFooter" data-dojo-type="dijit.layout.ContentPane" data-dojo-props='region:"bottom"'>
+          <div id="eventSliderPanel" class="panel_content" data-dojo-type="dijit.layout.ContentPane">
+		  </div>
+	   </div>
+    </div>
 
 </body>
 
